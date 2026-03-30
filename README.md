@@ -106,7 +106,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 ## Healthcheck 확인 방법
 
-```docker inspect <컨테이너이름>``` 명령어를 통해 확인 가능
+```bash
+# db healthcheck 상태
+docker inspect --format='{{json .State.Health}}' 02compose-db-1 | python3 -m json.tool
+
+# app healthcheck 상태
+docker inspect --format='{{json .State.Health}}' 02compose-app-1 | python3 -m json.tool
+``` 
 
 ---
 
@@ -259,16 +265,6 @@ app의 상태가 다시 healthy로 바뀐 것을 확인
 | 체크 대상 | DB 자체 (`mysqladmin ping`) | 앱 + DB 연결 (`curl /emp/deptall`) |
 | 역할 | app 시작 조건 판단 | 앱의 실제 동작 상태 모니터링 |
 | 영향 | app 컨테이너 생성 여부 결정 | 컨테이너 healthy/unhealthy 상태 표시 |
-
-### Healthcheck 상태 확인 명령어
-
-```bash
-# db healthcheck 상태
-docker inspect --format='{{json .State.Health}}' 02compose-db-1 | python3 -m json.tool
-
-# app healthcheck 상태
-docker inspect --format='{{json .State.Health}}' 02compose-app-1 | python3 -m json.tool
-```
 
 ---
 
